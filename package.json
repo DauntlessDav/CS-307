@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm run start --prefix ./packages/react-frontend"
+    "start": "npm run -w react-frontend dev"
   },
   "author": "",
   "license": "ISC",
