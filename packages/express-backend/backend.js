@@ -36,6 +36,7 @@ const users = {
 
 app.use(express.json());
 
+// not sure whether to delete this or keep it here as proof of me doing this, but it was redundant
 const findUserByName = (name) => {
   return users["users_list"].filter(
     (user) => user["name"].toLowerCase() === name
@@ -44,11 +45,23 @@ const findUserByName = (name) => {
 
 // my name and job filter helper function
 const filterUsers = (name, job) => {
-  return users["users_list"].filter(
-    (user) => 
-      user["job"].toLowerCase() === job.toLowerCase() && 
-      user["name"].toLowerCase() === name.toLowerCase()
-  );
+  if (name != undefined && job != undefined){
+    return users["users_list"].filter(
+      (user) => 
+        user["job"].toLowerCase() === job.toLowerCase() && 
+        user["name"].toLowerCase() === name.toLowerCase()
+    );
+  }else if(name == undefined) {
+    return users["users_list"].filter(
+      (user) => 
+        user["job"].toLowerCase() === job.toLowerCase()
+    );
+  }else{
+    return users["users_list"].filter(
+      (user) => 
+        user["name"].toLowerCase() === name.toLowerCase()
+    );
+  }
 };
 
 const findUserById = (id) =>
@@ -66,15 +79,8 @@ app.get("/users", (req, res) => {
   if (name == undefined && job == undefined) {
     res.send(users);
   } else {
-    let result;
-    if (job != undefined) {
-      result = filterUsers(name, job);
-      result = { users_list: result };
-    }else{
-      let nameResult = findUserByName(name);
-      result = { users_list: nameResult };
-    }
-    
+    let result = filterUsers(name, job);
+    result = { users_list: result };
     res.send(result);
   }
 });
