@@ -42,6 +42,15 @@ const findUserByName = (name) => {
   );
 };
 
+// my name and job filter helper function
+const filterUsers = (name, job) => {
+  return users["users_list"].filter(
+    (user) => 
+      user["job"].toLowerCase() === job.toLowerCase() && 
+      user["name"].toLowerCase() === name.toLowerCase()
+  );
+};
+
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
@@ -52,13 +61,21 @@ const addUser = (user) => {
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
-  if (name != undefined) {
-    let result = findUserByName(name);
-    console.log( result );
-    result = { users_list: result };
-    res.send(result);
-  } else {
+  const job = req.query.job;
+
+  if (name == undefined && job == undefined) {
     res.send(users);
+  } else {
+    let result;
+    if (job != undefined) {
+      result = filterUsers(name, job);
+      result = { users_list: result };
+    }else{
+      let nameResult = findUserByName(name);
+      result = { users_list: nameResult };
+    }
+    
+    res.send(result);
   }
 });
 
@@ -71,6 +88,17 @@ app.get("/users/:id", (req, res) => {
     res.send(result);
   }
 });
+
+// my custom stuff
+app.delete("/users/:id", (req, res) =>{
+  const id = req.params["id"];
+  let result = findUserById(id);
+  let x = users["users_list"].indexOf(result);
+  users["users_list"].splice(x,1);
+  res.send();
+});
+
+// end my custom stuff
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
