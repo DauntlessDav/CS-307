@@ -6,7 +6,7 @@ import "./main.css";
 
 const container = document.getElementById("root");
 
-// Create a root
+// Create a root:
 const root = ReactDOMClient.createRoot(container);
 
 // Initial render:
