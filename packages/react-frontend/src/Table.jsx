@@ -8,6 +8,7 @@ function TableHeader() {
             <tr>
                 <th>Name</th>
                 <th>Job</th>
+                <th>Id</th>
                 <th>Remove</th>
             </tr>
         </thead>
@@ -16,10 +17,12 @@ function TableHeader() {
 
 function TableBody(props) {
     const rows = props.characterData.map((row, index) => {
+        console.log(typeof(row.id));
         return (
             <tr key={index}>
                 <td>{row.name}</td>
                 <td>{row.job}</td>
+                <td>{row.id}</td>
                 <td>
                     <button onClick={() => props.removeCharacter(index)}>
                     Delete
